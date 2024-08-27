@@ -3,7 +3,7 @@ import pickle
 import numpy as np
 
 # Load your model (adjust the path accordingly)
-model_path = 'model (1).pkl'
+model_path = 'modeltask.pkl'
 with open(model_path, 'rb') as model_file:
     model = pickle.load(model_file)
 
