@@ -4,7 +4,7 @@ import numpy as np
 from sklearn.tree import DecisionTreeClassifier
 
 # Load your model (adjust the path accordingly)
-model_path = 'model (2).pkl'
+model_path = 'model (3).pkl'
 with open(model_path, 'rb') as model_file:
     model = pickle.load(model_file)
 
