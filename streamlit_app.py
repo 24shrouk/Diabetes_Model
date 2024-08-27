@@ -11,14 +11,23 @@ with open(model_path, 'rb') as model_file:
 
 # Title of the app
 st.title("Diabetes Model Prediction")
+ features = pd.DataFrame({
+        'Pregnancies': [pregnancies],
+        'Glucose': [glucose],
+        'Insulin': [insulin],
+        'BMI': [bmi],
+        'DiabetesPedigreeFunction': [pedigree],
+        'Age': [age]
+    })
+    
+    # Ensure the input DataFrame has the correct columns
+    feature_columns = ['Pregnancies', 'Glucose', 'Insulin', 'BMI', 'DiabetesPedigreeFunction', 'Age']
+    if not all(col in features.columns for col in feature_columns):
+        raise ValueError("Input DataFrame does not have the required columns.")
+    
+    # Predict using the model
 
-# Input features with default empty strings
-pregnancies = st.text_input("Enter Pregnancies:", "0")
-glucose = st.text_input("Enter Glucose:", "0")
-insulin = st.text_input("Enter Insulin:", "0")
-bmi = st.text_input("Enter BMI:", "0.0")
-diabetesPedigreeFunction = st.text_input("Enter Diabetes Pedigree Function:", "0.0")
-age = st.text_input("Enter Age:", "0")
+
 
 # Button for prediction
 if st.button("Predict"):
@@ -36,8 +45,8 @@ if st.button("Predict"):
             st.write("Please enter positive numeric values for all inputs.")
         else:
             # Prepare the input array
-            features = np.array([[pregnancies, glucose, insulin, bmi, diabetesPedigreeFunction, age]])
-            prediction = model.predict(features)
+                prediction = model.predict(features)
+           
 
             # Display the prediction
             result = "Diabetes" if prediction[0] == 1 else "No Diabetes"
