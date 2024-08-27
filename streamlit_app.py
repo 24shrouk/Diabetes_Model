@@ -10,19 +10,27 @@ with open('model (3).pkl', 'rb') as file:
     model = pickle.load(file)
 
 #title the page
-st.title("diabetes patient")
+# Function to make predictions
+def predict_diabetes(pregnancies, glucose, insulin, bmi, pedigree, age):
+    input_data = [[pregnancies, glucose, insulin, bmi, pedigree, age]]
+    prediction = model.predict(input_data)
+    return prediction[0]
 
-#set image
+# Streamlit app
+st.title('Diabetes Prediction App')
 
-#inputs
-Pregnancies = st.number_input('Pregnancies' , min_value=0.0 , max_value=10.0,value=1.0)
-Glucose = st.number_input('Glucose' , min_value=0.0 , max_value=10.0,value=1.0)
-Insulin =  st.number_input('Insulin' , min_value=0.0 , max_value=100.0,value=1.0)
-BMI =  st.number_input('BMI' , min_value=0.0 , max_value=100.0,value=1.0)
-DiabetesPedigreeFunction =  st.number_input('DiabetesPedigreeFunction' , min_value=0.0 , max_value=100.0,value=1.0)
-Age =  st.number_input('Age' , min_value=0.0 , max_value=100.0,value=1.0)
+st.write("Enter the following details:")
 
-output = model.predict([[Pregnancies,Glucose,Insulin,BMI,DiabetesPedigreeFunction,Age]])
+pregnancies = st.number_input('Pregnancies', min_value=0, max_value=20, value=0)
+glucose = st.number_input('Glucose', min_value=0, max_value=200, value=0)
+insulin = st.number_input('Insulin', min_value=0, max_value=1000, value=0)
+bmi = st.number_input('BMI', min_value=0.0, max_value=100.0, value=0.0)
+pedigree = st.number_input('Diabetes Pedigree Function', min_value=0.0, max_value=2.5, value=0.0)
+age = st.number_input('Age', min_value=0, max_value=120, value=0)
 
-#display the result
-st.write("diabetes patient : ",round(output[0],2))
+if st.button('Predict'):
+    result = predict_diabetes(pregnancies, glucose, insulin, bmi, pedigree, age)
+    if result == 1:
+        st.write("The model predicts: **Diabetic**")
+    else:
+        st.write("The model predicts: **Not Diabetic**")
