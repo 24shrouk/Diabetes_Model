@@ -1,21 +1,18 @@
-
 from sklearn.tree import DecisionTreeClassifier
 import numpy as np
 import streamlit as st
 import pickle
 
-
-# load pkl file
-with open('model (3).pkl', 'rb') as file:
+# Load the model
+with open('model.pkl', 'rb') as file:
     model = pickle.load(file)
 
-#title the page
 # Function to make predictions
 def predict_diabetes(pregnancies, glucose, insulin, bmi, pedigree, age):
     features = np.array([[
-            int(pregnancies), int(glucose), int(insulin),
-            float(bmi), float(diabetesPedigreeFunction), int(age)
-        ]])
+        int(pregnancies), int(glucose), int(insulin),
+        float(bmi), float(pedigree), int(age)
+    ]])
     prediction = model.predict(features)
     return prediction[0]
 
@@ -37,3 +34,4 @@ if st.button('Predict'):
         st.write("The model predicts: **Diabetic**")
     else:
         st.write("The model predicts: **Not Diabetic**")
+
