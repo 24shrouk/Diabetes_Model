@@ -1,8 +1,8 @@
+
+from sklearn.tree import DecisionTreeClassifier
 import streamlit as st
 import pickle
 import numpy as np
-from sklearn.tree import DecisionTreeClassifier
-
 
 # Load your model
 model_path = 'model (3).pkl'
@@ -23,18 +23,27 @@ age = st.text_input("Enter Age:", "0")
 # Button for prediction
 if st.button("Predict"):
     try:
-        # Ensure all inputs are filled and convert them
-        if pregnancies and glucose and insulin and bmi and diabetesPedigreeFunction and age:
-            features = np.array([[
-                int(pregnancies), int(glucose), int(insulin),
-                float(bmi), float(diabetesPedigreeFunction), int(age)
-            ]])
+        # Convert inputs to numeric values and handle any conversion issues
+        pregnancies = int(pregnancies.strip())
+        glucose = int(glucose.strip())
+        insulin = int(insulin.strip())
+        bmi = float(bmi.strip())
+        diabetesPedigreeFunction = float(diabetesPedigreeFunction.strip())
+        age = int(age.strip())
+        
+        # Ensure all values are positive numbers
+        if pregnancies < 0 or glucose < 0 or insulin < 0 or bmi < 0 or diabetesPedigreeFunction < 0 or age < 0:
+            st.write("Please enter positive numeric values for all inputs.")
+        else:
+            # Prepare the input array
+            features = np.array([[pregnancies, glucose, insulin, bmi, diabetesPedigreeFunction, age]])
             prediction = model.predict(features)
-            
+
             # Display the prediction
             result = "Diabetes" if prediction[0] == 1 else "No Diabetes"
             st.write(f"Diabetes Prediction is: {result}")
-        else:
-            st.write("Please enter valid numeric values for all inputs.")
-    except ValueError:
+            
+    except ValueError as e:
+        # Show an error message if conversion fails
+        st.write(f"Error in input conversion: {e}")
         st.write("Please enter valid numeric values for all inputs.")
