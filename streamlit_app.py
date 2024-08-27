@@ -12,8 +12,12 @@ with open('model (3).pkl', 'rb') as file:
 #title the page
 # Function to make predictions
 def predict_diabetes(pregnancies, glucose, insulin, bmi, pedigree, age):
-    input_data = [[pregnancies, glucose, insulin, bmi, pedigree, age]]
-    prediction = model.predict(input_data)
+  features = np.array([[
+            int(pregnancies), int(glucose), int(insulin),
+            float(bmi), float(diabetesPedigreeFunction), int(age)
+        ]])
+
+    prediction = model.predict(features)
     return prediction[0]
 
 # Streamlit app
