@@ -12,7 +12,7 @@ with open('model (3).pkl', 'rb') as file:
 #title the page
 # Function to make predictions
 def predict_diabetes(pregnancies, glucose, insulin, bmi, pedigree, age):
-  features = np.array([[
+   features = np.array([[
             int(pregnancies), int(glucose), int(insulin),
             float(bmi), float(diabetesPedigreeFunction), int(age)
         ]])
