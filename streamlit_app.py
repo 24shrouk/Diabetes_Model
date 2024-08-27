@@ -1,6 +1,8 @@
 import streamlit as st
 import pickle
 import numpy as np
+from sklearn.tree import DecisionTreeClassifier
+import pickle
 
 # Load your model (adjust the path accordingly)
 model_path = 'modeltask.pkl'
