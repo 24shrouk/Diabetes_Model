@@ -27,4 +27,4 @@ if st.button("Predict"):
     prediction = model.predict(features)
     
     # Display the prediction
-    st.write(f"Diabetes Prediction is : {prediction[0]}")
+    st.write(f" Diabetes Prediction is : {prediction[0]}")
