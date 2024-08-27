@@ -1,39 +1,28 @@
 
 from sklearn.tree import DecisionTreeClassifier
-
-   
+import numpy as np
 import streamlit as st
 import pickle
-import numpy as np
-from sklearn.tree import DecisionTreeClassifier
 
-# Load your model (adjust the path accordingly)
-model_path = 'model (3).pkl'
-with open(model_path, 'rb') as model_file:
-    model = pickle.load(model_file)
 
-# Title of the app
-st.title("Diabetes Model Prediction")
+# load pkl file
+with open('model (3).pkl', 'rb') as file:
+    model = pickle.load(file)
 
-# Input features
-pregnancies = st.text_input("Enter Pregnancies:")
-glucose = st.text_input("Enter Glucose:")
-insulin = st.text_input("Enter Insulin:")
-bmi = st.text_input("Enter BMI:")
-diabetesPedigreeFunction = st.text_input("Enter DiabetesPedigreeFunction:")
-age = st.text_input("Enter Age:")
+#title the page
+st.title("diabetes patient")
 
-# Button for prediction
-if st.button("Predict"):
-    try:
-        # Convert features to a numpy array and ensure they are numeric
-        features = np.array([[
-            int(pregnancies), int(glucose), int(insulin),
-            float(bmi), float(diabetesPedigreeFunction), int(age)
-        ]])
-        prediction = model.predict(features)
-        
-        # Display the prediction
-        st.write(f"Diabetes Prediction is: {prediction[0]}")
-    except ValueError:
-        st.write("Please enter valid numeric values for all inputs.")
+#set image
+
+#inputs
+Pregnancies = st.number_input('Pregnancies' , min_value=0.0 , max_value=10.0,value=1.0)
+Glucose = st.number_input('Glucose' , min_value=0.0 , max_value=10.0,value=1.0)
+Insulin =  st.number_input('Insulin' , min_value=0.0 , max_value=100.0,value=1.0)
+BMI =  st.number_input('BMI' , min_value=0.0 , max_value=100.0,value=1.0)
+DiabetesPedigreeFunction =  st.number_input('DiabetesPedigreeFunction' , min_value=0.0 , max_value=100.0,value=1.0)
+Age =  st.number_input('Age' , min_value=0.0 , max_value=100.0,value=1.0)
+
+output = model.predict([[Pregnancies,Glucose,Insulin,BMI,DiabetesPedigreeFunction,Age]])
+
+#display the result
+st.write("diabetes patient : ",round(output[0],2))
