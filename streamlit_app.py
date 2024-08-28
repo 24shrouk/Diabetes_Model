@@ -1,43 +1,49 @@
-from sklearn.tree import DecisionTreeClassifier
-import numpy as np
+
 import streamlit as st
-import pickle
+import pandas as pd
+import joblib
 
-# Load the model
-with open('model (3).pkl', 'rb') as file:
-    model = pickle.load(file)
+# Load your trained model
+model = joblib.load('model (3).pkl')  # Replace with your model path
 
-# Function to make predictions
 def predict_diabetes(pregnancies, glucose, insulin, bmi, pedigree, age):
-    features = np.array([[
-        int(pregnancies), int(glucose), int(insulin),
-        float(bmi), float(pedigree), int(age)
-    ]])
+    # Create a DataFrame with the input features
+    features = pd.DataFrame({
+        'Pregnancies': [pregnancies],
+        'Glucose': [glucose],
+        'Insulin': [insulin],
+        'BMI': [bmi],
+        'DiabetesPedigreeFunction': [pedigree],
+        'Age': [age]
+    })
+    
+    # Ensure the input DataFrame has the correct columns
+    expected_columns = ['Pregnancies', 'Glucose', 'Insulin', 'BMI', 'DiabetesPedigreeFunction', 'Age']
+    if list(features.columns) != expected_columns:
+        raise ValueError(f"Input DataFrame columns do not match. Expected: {expected_columns}, but got: {list(features.columns)}")
+    
+    # Predict using the model
     prediction = model.predict(features)
     return prediction[0]
 
-# Streamlit app
-st.title('Diabetes Prediction App')
+st.title("Diabetes Prediction")
 
-st.write("Enter the following details:")
-
-pregnancies = st.number_input('Pregnancies', min_value=0, max_value=20, value=0)
-glucose = st.number_input('Glucose', min_value=0, max_value=200, value=0)
-insulin = st.number_input('Insulin', min_value=0, max_value=1000, value=0)
-bmi = st.number_input('BMI', min_value=0.0, max_value=100.0, value=0.0)
-pedigree = st.number_input('Diabetes Pedigree Function', min_value=0.0, max_value=2.5, value=0.0)
-age = st.number_input('Age', min_value=0, max_value=120, value=0)
-
-features = np.array([[pregnancies, glucose, insulin, bmi, pedigree, age]])
-
-# Predict using the model
-prediction = model.predict(features)
-
+# Input fields
+pregnancies = st.number_input('Enter Pregnancies', min_value=0, value=0)
+glucose = st.number_input('Enter Glucose', min_value=0.0, value=0.0)
+insulin = st.number_input('Enter Insulin', min_value=0.0, value=0.0)
+bmi = st.number_input('Enter BMI', min_value=0.0, value=0.0)
+pedigree = st.number_input('Enter Diabetes Pedigree Function', min_value=0.0, value=0.0)
+age = st.number_input('Enter Age', min_value=0, value=0)
 
 if st.button('Predict'):
-    result = prediction[0]
-    if result == 1:
-        st.write("The model predicts: **Diabetic**")
-    else:
-        st.write("The model predicts: **Not Diabetic**")
+    try:
+        # Call the predict function and display the result
+        prediction = predict_diabetes(pregnancies, glucose, insulin, bmi, pedigree, age)
+        st.write(f'Prediction: {"Diabetic" if prediction == 1 else "Not Diabetic"}')
+    except ValueError as e:
+        st.error(f"Error: {e}")
+    except Exception as e:
+        st.error(f"An unexpected error occurred: {e}")
+
 
