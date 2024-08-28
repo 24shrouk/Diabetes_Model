@@ -2,6 +2,7 @@
 import streamlit as st
 import pandas as pd
 import joblib
+from sklearn.tree import DecisionTreeClassifier
 
 # Load your trained model
 model = joblib.load('model (3).pkl')  # Replace with your model path
