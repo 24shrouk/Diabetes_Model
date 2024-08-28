@@ -28,8 +28,14 @@ bmi = st.number_input('BMI', min_value=0.0, max_value=100.0, value=0.0)
 pedigree = st.number_input('Diabetes Pedigree Function', min_value=0.0, max_value=2.5, value=0.0)
 age = st.number_input('Age', min_value=0, max_value=120, value=0)
 
+features = np.array([[pregnancies, glucose, insulin, bmi, pedigree, age]])
+
+# Predict using the model
+prediction = model.predict(features)
+
+
 if st.button('Predict'):
-    result = predict_diabetes(pregnancies, glucose, insulin, bmi, pedigree, age)
+    result = prediction[0]
     if result == 1:
         st.write("The model predicts: **Diabetic**")
     else:
