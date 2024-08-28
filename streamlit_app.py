@@ -20,13 +20,14 @@ diabetesPedigreeFunction = st.text_input("Enter DiabetesPedigreeFunction:")
 age = st.text_input("Enter Age:")
 
 # Button for prediction
+
 if st.button("Predict"):
     try:
         # Convert features to a numpy array and ensure they are numeric
-        features = np.array([[
+        features = [[
             int(pregnancies), int(glucose), int(insulin),
             float(bmi), float(diabetesPedigreeFunction), int(age)
-        ]])
+        ]]
         prediction = model.predict(features)
         
         # Display the prediction
